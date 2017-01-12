@@ -7,4 +7,6 @@ import model.entity.Entity;
  */
 public interface Repository<K extends Entity> {
     public K getById();
+
+    public K[] findAll();
 }
