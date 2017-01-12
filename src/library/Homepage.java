@@ -28,7 +28,7 @@ public class Homepage extends HttpServlet {
             writer.println("</head>");
             writer.println("<body>");
 
-            writer.println("<h1>This is a simple java servlet.</h1>");
+            writer.println("<h1>This is a  java servle¡¡t.</h1>");
 
             writer.println("</body>");
             writer.println("</html>");
