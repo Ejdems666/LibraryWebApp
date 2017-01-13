@@ -3,7 +3,7 @@ package model.entity;
 /**
  * Created by ivoni on 1/12/2017.
  */
-public class Item implements Entity {
+public class Category implements Entity{
 
     String name;
     int id;
@@ -18,7 +18,7 @@ public class Item implements Entity {
         this.id = id;
     }
 
-    @Override
+   @Override
     public int getId() {
         return this.id;
     }
