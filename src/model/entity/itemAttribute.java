@@ -3,7 +3,7 @@ package model.entity;
 /**
  * Created by ivoni on 1/12/2017.
  */
-public class Item_Attrebute implements Entity {
+public class itemAttribute implements Entity {
 
     private int id;
     private int item_id;
