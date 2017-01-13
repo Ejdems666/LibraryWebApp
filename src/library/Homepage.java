@@ -1,5 +1,8 @@
 package library;
 
+import model.Connector;
+import model.repository.ItemRepository;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,5 +19,11 @@ public class Homepage extends Servlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("title","title");
         this.renderTemplate(request,response);
+        try {
+            Connector connector = new Connector();
+            ItemRepository itemRepository = new ItemRepository(connector);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
