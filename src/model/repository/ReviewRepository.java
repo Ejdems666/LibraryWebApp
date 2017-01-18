@@ -1,6 +1,5 @@
 package model.repository;
 
-import model.Connector;
 import model.QueryExecutor;
 import model.QuerySelector;
 import model.entity.Review;
@@ -16,7 +15,7 @@ import java.util.Collection;
  */
 public class ReviewRepository implements Repository<Review> {
     private QuerySelector querySelector;
-    private ArrayList<Review> identiryMap = new ArrayList<>();
+    private ArrayList<Review> identityMap = new ArrayList<>();
     private ArrayList<Review> persistedEntities = new ArrayList<>();
     private QueryExecutor queryExecutor;
 
@@ -30,10 +29,7 @@ public class ReviewRepository implements Repository<Review> {
         Review review = null;
         try {
             ResultSet rs = querySelector.getResultSet("SELECT * FROM review WHERE id=" + id);
-
             review = mapReview(rs);
-            identiryMap.add(review);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -48,6 +44,7 @@ public class ReviewRepository implements Repository<Review> {
             review.setId(rs.getInt("id"));
             review.setUserId(rs.getInt("user_id"));
             review.setItemId(rs.getInt("item_id"));
+            identityMap.add(review);
         }
         return review;
     }
@@ -57,10 +54,10 @@ public class ReviewRepository implements Repository<Review> {
         ArrayList<Review> reviews = null;
         try {
             ResultSet rs = querySelector.getResultSet("SELECT * FROM review");
-            while (rs.next()) {
-                Review review = mapReview(rs);
-                identiryMap.add(review);
+            Review review = mapReview(rs);
+            while (review != null) {
                 reviews.add(review);
+                review = mapReview(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,16 +67,37 @@ public class ReviewRepository implements Repository<Review> {
 
     @Override
     public void persist(Review entity) {
-
+        persistedEntities.add(entity);
     }
 
     @Override
     public void persistAndFlush(Review entity) {
-
+        persist(entity);
+        flush();
     }
 
     @Override
     public void flush() {
-
+        Object[] objects = new Object[3];
+        String sql;
+        for (Review persistedEntity : persistedEntities) {
+            if(!identityMap.contains(persistedEntity)) {
+                sql = "INSERT INTO review(value,timestamp,user_id,item_id) VALUES(?,?,?,?)";
+                objects[0] = persistedEntity.getValue();
+                objects[1] = persistedEntity.getTimestamp();
+                objects[2] = persistedEntity.getUserId();
+                objects[3] = persistedEntity.getItemId();
+                int id = queryExecutor.insert(sql,objects);
+                persistedEntity.setId(id);
+            } else {
+                sql = "UPDATE frame SET value=?,timestamp=?,user_id=?,item_id=? WHERE id=?";
+                objects[0] = persistedEntity.getValue();
+                objects[1] = persistedEntity.getTimestamp();
+                objects[2] = persistedEntity.getUserId();
+                objects[3] = persistedEntity.getItemId();
+                objects[4] = persistedEntity.getId();
+                queryExecutor.update(sql,objects);
+            }
+        }
     }
 }
