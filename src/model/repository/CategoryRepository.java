@@ -6,6 +6,7 @@ import model.entity.Category;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by ivoni on 1/14/2017.
@@ -35,7 +36,7 @@ public class CategoryRepository implements Repository<Category> {
     }
 
     @Override
-    public Category[] findAll() {
+    public Collection<Category> findAll() {
 
             ArrayList<Category> categories = new ArrayList<Category>();
             try {
@@ -49,8 +50,7 @@ public class CategoryRepository implements Repository<Category> {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Category[] categoryGeneric = new Category[categories.size()];
-            return categoryGeneric;
+            return categories;
         }
     }
 

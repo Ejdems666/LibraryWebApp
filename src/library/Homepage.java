@@ -2,6 +2,7 @@ package library;
 
 import model.Connector;
 import model.repository.ItemRepository;
+import model.repository.UserRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,8 @@ public class Homepage extends Servlet {
         this.renderTemplate(request,response);
         try {
             Connector connector = new Connector();
-            ItemRepository itemRepository = new ItemRepository(connector);
+            UserRepository userRepository = new UserRepository(connector);
+            System.out.println(userRepository.findAll());
         } catch (Exception e) {
             e.printStackTrace();
         }
