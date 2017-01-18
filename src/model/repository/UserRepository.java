@@ -1,7 +1,9 @@
 package model.repository;
 
 import model.Connector;
+import model.QueryExecutor;
 import model.QuerySelector;
+import model.entity.Item;
 import model.entity.User;
 import model.entity.Entity;
 
@@ -15,9 +17,13 @@ import java.util.Collection;
  */
 public class UserRepository implements Repository {
     private QuerySelector querySelector;
+    private QueryExecutor queryExecutor;
+    private ArrayList<User> identityMap = new ArrayList<>();
+    private ArrayList<User> persistedEntities = new ArrayList<>();
 
     public UserRepository(Connector connector) {
         querySelector = new QuerySelector(connector.getConnection());
+        queryExecutor = new QueryExecutor(connector.getConnection());
     }
 
 
@@ -39,7 +45,7 @@ public class UserRepository implements Repository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        identityMap.add(user);
         return user;
     }
 
@@ -57,7 +63,9 @@ public class UserRepository implements Repository {
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 String salt = rs.getString("salt");
-                users.add(new User(user_id, name, surname, email, password, salt));
+                User user = new User(user_id, name, surname, email, password, salt);
+                identityMap.add(user);
+                users.add(user);
 
             }
         } catch (SQLException e) {
@@ -69,7 +77,7 @@ public class UserRepository implements Repository {
 
     @Override
     public void persist(Entity entity) {
-
+        persistedEntities.add(((User) entity));
     }
 
     @Override
@@ -79,6 +87,33 @@ public class UserRepository implements Repository {
 
     @Override
     public void flush() {
+        Object[] objects;
+        String sql;
+        int id;
+        for (User persistedEntity : persistedEntities) {
+            if(!identityMap.contains(persistedEntity)) {
+            sql = "INSERT INTO 'user' ('user_id, 'name', 'surname', 'email', 'password', 'salt')" +
+                    "VALUES (?,?,?,?,?,?)";
+            objects = new Object[6];
+            objects[0] = persistedEntity.getId();
+            objects[1] = persistedEntity.getName();
+            objects[2] = persistedEntity.getSurname();
+            objects[3] = persistedEntity.getEmail();
+            objects[4] = persistedEntity.getPassword();
+            objects[5] = persistedEntity.getSalt();
+            id = queryExecutor.insert(sql, objects);
+            persistedEntity.setId(id);
 
+            }else {
+                sql = "UPDATE order SET user_id=?, name=?, surname=?, email=?, password=? salt=? WHERE id=?";
+                objects = new Object[7];
+                objects[1] = persistedEntity.getName();
+                objects[2] = persistedEntity.getSurname();
+                objects[3] = persistedEntity.getEmail();
+                objects[4] = persistedEntity.getPassword();
+                objects[5] = persistedEntity.getSalt();
+                objects[6]= persistedEntity.getId();
+            }
+        }
     }
 }
