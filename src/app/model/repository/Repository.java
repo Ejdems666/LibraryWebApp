@@ -2,6 +2,7 @@ package app.model.repository;
 
 import hyggedb.select.Condition;
 import app.model.entity.Entity;
+import hyggedb.select.Selection;
 
 import java.util.Collection;
 

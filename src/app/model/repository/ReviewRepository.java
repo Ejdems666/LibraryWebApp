@@ -4,7 +4,6 @@ import hyggedb.insert.InsertionExecutor;
 import hyggedb.select.Condition;
 import hyggedb.select.Selection;
 import app.model.Model;
-import app.model.QueryExecutor;
 import app.model.entity.Review;
 
 import java.sql.ResultSet;

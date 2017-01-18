@@ -1,9 +1,9 @@
 package app.model.repository;
 
-import hyggedb.select.Condition;
-import hyggedb.select.Selection;
 import app.model.Model;
 import app.model.entity.Attribute;
+import hyggedb.select.Condition;
+import hyggedb.select.Selection;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +24,7 @@ public class AttributeRepository extends AbstractRepository<Attribute> {
         Attribute attribute = null;
         try {
             Selection selection = new Selection("attribute");
-            selection.where("id=?",id);
+            selection.where("id=?", id);
             ResultSet rs = model.getSelectionExecutor().getResult(selection);
             attribute = mapAttribute(rs);
         } catch (SQLException e) {
@@ -46,9 +46,13 @@ public class AttributeRepository extends AbstractRepository<Attribute> {
 
     @Override
     public Collection<Attribute> findAll() {
-        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+        ResultSet rs = model.getSelectionExecutor().getResult(new Selection("attribute"));
+        return mapAttributes(rs);
+    }
+
+    private Collection<Attribute> mapAttributes(ResultSet rs) {
+        Collection<Attribute> attributes = new ArrayList<>();
         try {
-            ResultSet rs = model.getSelectionExecutor().getResult(new Selection("attribute"));
             Attribute attribute = mapAttribute(rs);
             while (attribute != null) {
                 attributes.add(attribute);
@@ -63,6 +67,16 @@ public class AttributeRepository extends AbstractRepository<Attribute> {
     @Override
     public Collection<Attribute> findBy(Condition condition) {
         return null;
+    }
+
+    public Collection<Attribute> findByCategory(int categoryId) {
+        Selection selection = new Selection("category", "");
+        selection.where("id=?",categoryId);
+        selection.join("category_attribute", "id", "category_id")
+                .join("attribute", "attribute_id", "id")
+                .addColumns("*");
+        ResultSet rs = model.getSelectionExecutor().getResult(selection);
+        return mapAttributes(rs);
     }
 
     @Override
