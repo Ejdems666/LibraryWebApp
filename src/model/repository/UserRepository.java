@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by ivoni on 1/14/2017.
@@ -44,7 +45,7 @@ public class UserRepository implements Repository {
     }
 
     @Override
-    public Entity[] findAll() {
+    public Collection<User> findAll() {
 
         ArrayList<User> users = new ArrayList<User>();
 
@@ -64,8 +65,7 @@ public class UserRepository implements Repository {
             e.printStackTrace();
         }
 
-        User[] users1 = new User[users.size()];
-        return users1;
+        return users;
     }
 
     @Override

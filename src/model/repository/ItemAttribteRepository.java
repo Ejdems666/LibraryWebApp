@@ -8,8 +8,8 @@ import model.entity.ItemAttribute;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by ivoni on 1/15/2017.
@@ -30,8 +30,8 @@ public class ItemAttribteRepository implements Repository{
             if (rs.next()) {
 
                 itemRep.setId(rs.getInt("id"));
-                itemRep.setItem_id(rs.getInt("user_id"));
-                itemRep.setItem_id(rs.getInt("attribute_id"));
+                itemRep.setItemId(rs.getInt("user_id"));
+                itemRep.setItemId(rs.getInt("attribute_id"));
                 itemRep.setData(rs.getString("data"));
 
             }
@@ -42,7 +42,7 @@ public class ItemAttribteRepository implements Repository{
     }
 
     @Override
-    public Entity[] findAll() {
+    public Collection<ItemAttribute> findAll() {
         ArrayList<ItemAttribute> itemAttributes = new ArrayList<ItemAttribute>();
 
         try {
@@ -60,8 +60,7 @@ public class ItemAttribteRepository implements Repository{
             e.printStackTrace();
         }
 
-        ItemAttribute[] itemAttributes1 = new ItemAttribute[itemAttributes.size()];
-        return itemAttributes1;
+        return itemAttributes;
 
     }
 

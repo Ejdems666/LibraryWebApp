@@ -7,6 +7,7 @@ import model.entity.Item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by adam on 13/01/2017.
@@ -34,7 +35,7 @@ public class ItemRepository implements Repository<Item> {
     }
 
     @Override
-    public Item[] findAll() {
+    public Collection<Item> findAll() {
 
         ArrayList<Item> items = new ArrayList<Item>();
             try {
@@ -48,8 +49,7 @@ public class ItemRepository implements Repository<Item> {
                 e.printStackTrace();
             }
 
-            Item[] items1 = new Item[items.size()];
-            return items1;
+            return items;
         }
 
     @Override

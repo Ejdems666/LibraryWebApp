@@ -6,6 +6,7 @@ import model.entity.Attribute;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by ivoni on 1/13/2017.
@@ -36,7 +37,7 @@ public class AttributeRepository implements Repository<Attribute>{
     }
 
         @Override
-    public Attribute[] findAll() {
+    public Collection<Attribute> findAll() {
 
             ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
@@ -51,8 +52,7 @@ public class AttributeRepository implements Repository<Attribute>{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            Attribute[] attributeList = new Attribute[attributes.size()];
-        return attributeList;
+            return attributes;
     }
 
     @Override
