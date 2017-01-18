@@ -1,5 +1,6 @@
 package model.repository;
 
+import com.mysql.cj.mysqlx.protobuf.MysqlxCrud;
 import model.Connector;
 import model.QuerySelector;
 import model.entity.Item;
@@ -8,12 +9,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Created by adam on 13/01/2017.
  */
 public class ItemRepository implements Repository<Item> {
     private QuerySelector querySelector;
+    private ArrayList<Item> identityMap = new ArrayList<>();
+    private ArrayList<Item> persistedEntities = new ArrayList<>();
 
     public ItemRepository(Connector connector) {
         querySelector = new QuerySelector(connector.getConnection());
@@ -31,6 +35,7 @@ public class ItemRepository implements Repository<Item> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        identityMap.add(item);
         return item;
     }
 
@@ -43,7 +48,11 @@ public class ItemRepository implements Repository<Item> {
                 if(rs.next()) {
                     String name = rs.getString("name");
                     int id = rs.getInt("id");
-                    items.add(new Item(name, id));
+                    Item item = new Item(name, id);
+                    identityMap.add(item);
+                    items.add(item);
+
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -54,12 +63,19 @@ public class ItemRepository implements Repository<Item> {
 
     @Override
     public void persist(Item entity) {
-
+        persistedEntities.add(((Item) entity));
     }
 
     @Override
     public void persistAndFlush(Item entity) {
+        Item[] items;
+        String sql;
+        int id;
+        for (Item persistedEntity : persistedEntities){
+            if(!identityMap.contains(persistedEntity)){
 
+            }
+        }
     }
 
     @Override
