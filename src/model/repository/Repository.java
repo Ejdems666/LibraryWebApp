@@ -12,10 +12,13 @@ public interface Repository<K extends Entity> {
 
     public Collection<K> findAll();
 
+    public Collection<K> findBy(String[] conditions, Object[] attributes);
+
     public void persist(K entity);
 
     public void persistAndFlush(K entity);
 
     public void flush();
+
 
 }

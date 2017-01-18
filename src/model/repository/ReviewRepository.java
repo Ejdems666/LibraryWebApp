@@ -13,15 +13,10 @@ import java.util.Collection;
 /**
  * Created by adam on 18/01/2017.
  */
-public class ReviewRepository implements Repository<Review> {
-    private QuerySelector querySelector;
-    private ArrayList<Review> identityMap = new ArrayList<>();
-    private ArrayList<Review> persistedEntities = new ArrayList<>();
-    private QueryExecutor queryExecutor;
+public class ReviewRepository extends AbstractRepository<Review> {
 
     public ReviewRepository(Connection connection) {
-        this.querySelector = new QuerySelector(connection);
-        this.queryExecutor = new QueryExecutor(connection);
+        super(connection);
     }
 
     @Override
@@ -66,6 +61,11 @@ public class ReviewRepository implements Repository<Review> {
     }
 
     @Override
+    public Collection<Review> findBy(String[] conditions, Object[] attributes) {
+        return null;
+    }
+
+    @Override
     public void persist(Review entity) {
         persistedEntities.add(entity);
     }
@@ -78,6 +78,7 @@ public class ReviewRepository implements Repository<Review> {
 
     @Override
     public void flush() {
+        QueryExecutor queryExecutor = new QueryExecutor(connection);
         Object[] objects = new Object[3];
         String sql;
         for (Review persistedEntity : persistedEntities) {

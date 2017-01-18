@@ -5,17 +5,7 @@ package model.entity;
  */
 public class User implements Entity{
 
-    public User(int id, String name, String surname, String email, String password, String salt) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.password = password;
-        this.salt = salt;
-    }
-
     private int id;
-
     private String name;
     private String surname;
     private String email;

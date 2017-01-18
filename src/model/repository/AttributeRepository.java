@@ -1,8 +1,8 @@
 package model.repository;
 
-import model.Connector;
-import model.QuerySelector;
 import model.entity.Attribute;
+
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -11,48 +11,54 @@ import java.util.Collection;
 /**
  * Created by ivoni on 1/13/2017.
  */
-public class AttributeRepository implements Repository<Attribute>{
+public class AttributeRepository extends AbstractRepository<Attribute> {
 
-    private QuerySelector querySelector;
-
-    public AttributeRepository(Connector connector) {
-        querySelector = new QuerySelector(connector.getConnection());
+    public AttributeRepository(Connection connection) {
+        super(connection);
     }
 
     @Override
     public Attribute getById(int id) {
-
         Attribute attribute = null;
-
         try {
             ResultSet rs = querySelector.getResultSet("SELECT * FROM attribute WHERE id = " + id);
-            if (rs.next()) {
-                attribute.setName(rs.getString("name"));
-                attribute.setId(rs.getInt("user_id"));
-            }
+            attribute = mapAttribute(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return attribute;
     }
 
-        @Override
+    private Attribute mapAttribute(ResultSet rs) throws SQLException {
+        Attribute attribute = null;
+        if (rs.next()) {
+            attribute = new Attribute();
+            attribute.setId(rs.getInt("id"));
+            attribute.setName(rs.getString("name"));
+            identityMap.add(attribute);
+        }
+        return attribute;
+    }
+
+    @Override
     public Collection<Attribute> findAll() {
-
-            ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-
-            try {
-                ResultSet rs = querySelector.getResultSet("SELECT * FROM attribute");
-                while(rs.next())
-                {
-                    String name = rs.getString("name");
-                    int user_id = rs.getInt("user_id");
-                    attributes.add(new Attribute(name, user_id));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+        try {
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM attribute");
+            Attribute attribute = mapAttribute(rs);
+            while (attribute != null) {
+                attributes.add(attribute);
+                attribute = mapAttribute(rs);
             }
-            return attributes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attributes;
+    }
+
+    @Override
+    public Collection<Attribute> findBy(String[] conditions, Object[] attributes) {
+        return null;
     }
 
     @Override

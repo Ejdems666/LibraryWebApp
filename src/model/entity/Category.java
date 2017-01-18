@@ -3,27 +3,24 @@ package model.entity;
 /**
  * Created by ivoni on 1/12/2017.
  */
-public class Category implements Entity{
+public class Category implements Entity {
 
-    String name;
-    int id;
-
-    public Category(String name, int id) {
-        this.name = name;
-        this.id = id;
-    }
+    private String name;
+    private int id;
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {this.name = name;}
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setId(int id) {
         this.id = id;
     }
 
-   @Override
+    @Override
     public int getId() {
         return this.id;
     }

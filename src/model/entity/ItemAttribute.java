@@ -10,13 +10,6 @@ public class ItemAttribute implements Entity {
     private int attributeId;
     private String data;
 
-    public ItemAttribute(int id, int itemId, int attributeId, String data) {
-        this.id = id;
-        this.itemId = itemId;
-        this.attributeId = attributeId;
-        this.data = data;
-    }
-
     @Override
     public int getId() {
         return id;
