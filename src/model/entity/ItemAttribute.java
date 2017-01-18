@@ -27,19 +27,19 @@ public class ItemAttribute implements Entity {
         this.id = id;
     }
 
-    public int getItem_id() {
+    public int getItemId() {
         return item_id;
     }
 
-    public void setItem_id(int item_id) {
+    public void setItemId(int item_id) {
         this.item_id = item_id;
     }
 
-    public int getAttribute_id() {
+    public int getAttributeId() {
         return attribute_id;
     }
 
-    public void setAttribute_id(int attribute_id) {
+    public void setAttributeId(int attribute_id) {
         this.attribute_id = attribute_id;
     }
 
