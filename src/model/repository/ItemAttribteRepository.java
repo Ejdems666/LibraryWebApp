@@ -16,6 +16,7 @@ import java.util.Collection;
  */
 public class ItemAttribteRepository implements Repository{
     private QuerySelector querySelector;
+    private ArrayList<ItemAttribute> identityMap = new ArrayList<>();
 
     public ItemAttribteRepository (Connector connector) {
         querySelector = new QuerySelector(connector.getConnection());
@@ -38,6 +39,7 @@ public class ItemAttribteRepository implements Repository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        identityMap.add(itemRep);
         return itemRep;
     }
 
@@ -53,7 +55,9 @@ public class ItemAttribteRepository implements Repository{
                 int item_id = rs.getInt("user_id");
                 int attribute_id = rs.getInt("attribute_id");
                 String data = rs.getString("data");
-                itemAttributes.add(new ItemAttribute(user_id, attribute_id, item_id, data));
+                ItemAttribute itemAttribute = new ItemAttribute(user_id, attribute_id, item_id, data);
+                identityMap.add(itemAttribute);
+                itemAttributes.add(itemAttribute);
 
             }
         } catch (SQLException e) {
