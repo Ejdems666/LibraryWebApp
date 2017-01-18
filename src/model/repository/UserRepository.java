@@ -1,13 +1,12 @@
 package model.repository;
 
 import model.Connector;
-import model.SqlIO;
+import model.QuerySelector;
 import model.entity.User;
 import model.entity.Entity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -15,10 +14,10 @@ import java.util.Collection;
  * Created by ivoni on 1/14/2017.
  */
 public class UserRepository implements Repository {
-    private SqlIO sqlIO;
+    private QuerySelector querySelector;
 
     public UserRepository(Connector connector) {
-        sqlIO = new SqlIO(connector.getConnection());
+        querySelector = new QuerySelector(connector.getConnection());
     }
 
 
@@ -28,7 +27,7 @@ public class UserRepository implements Repository {
         User user = null;
 
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM user WHERE id = " + id);
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM user WHERE id = " + id);
             if (rs.next()) {
                 user.setId(rs.getInt("user_id"));
                 user.setName(rs.getString("name"));
@@ -50,7 +49,7 @@ public class UserRepository implements Repository {
         ArrayList<User> users = new ArrayList<User>();
 
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM user");
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM user");
             while (rs.next()) {
                 int user_id = Integer.parseInt(rs.getString("user_id"));
                 String name = rs.getString("name");

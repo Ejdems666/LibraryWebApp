@@ -8,10 +8,10 @@ import java.sql.Statement;
 /**
  * Created by adam on 13/01/2017.
  */
-public class SqlIO {
+public class QuerySelector {
     private Connection connection;
 
-    public SqlIO(Connection connection) {
+    public QuerySelector(Connection connection) {
         this.connection = connection;
     }
 

@@ -1,7 +1,7 @@
 package model.repository;
 
 import model.Connector;
-import model.SqlIO;
+import model.QuerySelector;
 import model.entity.Category;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,17 +13,17 @@ import java.util.Collection;
  */
 public class CategoryRepository implements Repository<Category> {
 
-    private SqlIO sqlIO;
+    private QuerySelector querySelector;
 
     public CategoryRepository(Connector connector) {
-        sqlIO = new SqlIO(connector.getConnection());
+        querySelector = new QuerySelector(connector.getConnection());
     }
 
     @Override
     public Category getById(int id) {
         Category category = null;
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM category WHERE id = " + id);
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM category WHERE id = " + id);
             if (rs.next()) {
                 category.setName(rs.getString("name"));
                 category.setId(rs.getInt("user_id"));
@@ -40,7 +40,7 @@ public class CategoryRepository implements Repository<Category> {
 
             ArrayList<Category> categories = new ArrayList<Category>();
             try {
-                ResultSet rs = sqlIO.getResultSet("SELECT * FROM category WHERE");
+                ResultSet rs = querySelector.getResultSet("SELECT * FROM category WHERE");
                 while (rs.next()) {
                     String name = rs.getString("name");
                     int user_id = Integer.parseInt(rs.getString("user_id"));

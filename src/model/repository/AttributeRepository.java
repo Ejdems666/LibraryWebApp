@@ -1,7 +1,7 @@
 package model.repository;
 
 import model.Connector;
-import model.SqlIO;
+import model.QuerySelector;
 import model.entity.Attribute;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,10 +13,10 @@ import java.util.Collection;
  */
 public class AttributeRepository implements Repository<Attribute>{
 
-    private SqlIO sqlIO;
+    private QuerySelector querySelector;
 
     public AttributeRepository(Connector connector) {
-        sqlIO = new SqlIO(connector.getConnection());
+        querySelector = new QuerySelector(connector.getConnection());
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AttributeRepository implements Repository<Attribute>{
         Attribute attribute = null;
 
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM attribute WHERE id = " + id);
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM attribute WHERE id = " + id);
             if (rs.next()) {
                 attribute.setName(rs.getString("name"));
                 attribute.setId(rs.getInt("user_id"));
@@ -42,7 +42,7 @@ public class AttributeRepository implements Repository<Attribute>{
             ArrayList<Attribute> attributes = new ArrayList<Attribute>();
 
             try {
-                ResultSet rs = sqlIO.getResultSet("SELECT * FROM attribute");
+                ResultSet rs = querySelector.getResultSet("SELECT * FROM attribute");
                 while(rs.next())
                 {
                     String name = rs.getString("name");

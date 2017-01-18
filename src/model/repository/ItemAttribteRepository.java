@@ -1,7 +1,7 @@
 package model.repository;
 
 import model.Connector;
-import model.SqlIO;
+import model.QuerySelector;
 import model.entity.Entity;
 
 import model.entity.ItemAttribute;
@@ -15,10 +15,10 @@ import java.util.Collection;
  * Created by ivoni on 1/15/2017.
  */
 public class ItemAttribteRepository implements Repository{
-    private SqlIO sqlIO;
+    private QuerySelector querySelector;
 
     public ItemAttribteRepository (Connector connector) {
-        sqlIO = new SqlIO(connector.getConnection());
+        querySelector = new QuerySelector(connector.getConnection());
     }
 
     @Override
@@ -26,7 +26,7 @@ public class ItemAttribteRepository implements Repository{
         ItemAttribute itemRep = null;
 
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM itemAtribute WHERE id = " + id);
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM itemAtribute WHERE id = " + id);
             if (rs.next()) {
 
                 itemRep.setId(rs.getInt("id"));
@@ -46,7 +46,7 @@ public class ItemAttribteRepository implements Repository{
         ArrayList<ItemAttribute> itemAttributes = new ArrayList<ItemAttribute>();
 
         try {
-            ResultSet rs = sqlIO.getResultSet("SELECT * FROM itemAtribute");
+            ResultSet rs = querySelector.getResultSet("SELECT * FROM itemAtribute");
             while (rs.next()) {
 
                 int user_id = rs.getInt("id");
