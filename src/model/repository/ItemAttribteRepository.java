@@ -64,4 +64,19 @@ public class ItemAttribteRepository implements Repository{
         return itemAttributes1;
 
     }
+
+    @Override
+    public void persist(Entity entity) {
+
+    }
+
+    @Override
+    public void persistAndFlush(Entity entity) {
+
+    }
+
+    @Override
+    public void flush() {
+
+    }
 }

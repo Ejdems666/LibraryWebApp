@@ -52,5 +52,20 @@ public class ItemRepository implements Repository<Item> {
             return items1;
         }
 
+    @Override
+    public void persist(Item entity) {
+
     }
+
+    @Override
+    public void persistAndFlush(Item entity) {
+
+    }
+
+    @Override
+    public void flush() {
+
+    }
+
+}
 

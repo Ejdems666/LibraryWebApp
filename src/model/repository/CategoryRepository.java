@@ -52,5 +52,20 @@ public class CategoryRepository implements Repository<Category> {
             Category[] categoryGeneric = new Category[categories.size()];
             return categoryGeneric;
         }
+
+    @Override
+    public void persist(Category entity) {
+
     }
+
+    @Override
+    public void persistAndFlush(Category entity) {
+
+    }
+
+    @Override
+    public void flush() {
+
+    }
+}
 

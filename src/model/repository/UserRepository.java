@@ -67,4 +67,19 @@ public class UserRepository implements Repository {
         User[] users1 = new User[users.size()];
         return users1;
     }
+
+    @Override
+    public void persist(Entity entity) {
+
+    }
+
+    @Override
+    public void persistAndFlush(Entity entity) {
+
+    }
+
+    @Override
+    public void flush() {
+
+    }
 }

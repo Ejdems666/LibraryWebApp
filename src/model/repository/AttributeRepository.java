@@ -54,4 +54,19 @@ public class AttributeRepository implements Repository<Attribute>{
             Attribute[] attributeList = new Attribute[attributes.size()];
         return attributeList;
     }
+
+    @Override
+    public void persist(Attribute entity) {
+
+    }
+
+    @Override
+    public void persistAndFlush(Attribute entity) {
+
+    }
+
+    @Override
+    public void flush() {
+
+    }
 }
