@@ -1,5 +1,7 @@
 package app.model.repository;
 
+import app.model.entity.Review;
+import hyggedb.insert.InsertionExecutor;
 import hyggedb.select.Condition;
 import hyggedb.select.Selection;
 import app.model.Model;
@@ -72,16 +74,38 @@ public class ItemAttributeRepository extends AbstractRepository<ItemAttribute> {
 
     @Override
     public void persist(ItemAttribute entity) {
-
+        persistedEntities.add(entity);
     }
 
     @Override
     public void persistAndFlush(ItemAttribute entity) {
-
+        persist(entity);
+        flush();
     }
 
     @Override
     public void flush() {
-
+        InsertionExecutor insertionExecutor = model.getInsertionExecutor();
+        Object[] objects;
+        String sql;
+        for (ItemAttribute persistedEntity : persistedEntities) {
+            if(!identityMap.contains(persistedEntity)) {
+                sql = "INSERT INTO item_attribute(item_id,attribute_id,data) VALUES(?,?,?)";
+                objects = new Object[3];
+                objects[0] = persistedEntity.getItemId();
+                objects[1] = persistedEntity.getAttributeId();
+                objects[2] = persistedEntity.getData();
+                int id = insertionExecutor.insert(sql,objects);
+                persistedEntity.setId(id);
+            } else {
+                sql = "UPDATE item_attribute SET item_id=?,attribute_id=?,data=? WHERE id=?";
+                objects = new Object[4];
+                objects[0] = persistedEntity.getItemId();
+                objects[1] = persistedEntity.getAttributeId();
+                objects[2] = persistedEntity.getData();
+                objects[4] = persistedEntity.getId();
+                insertionExecutor.update(sql,objects);
+            }
+        }
     }
 }

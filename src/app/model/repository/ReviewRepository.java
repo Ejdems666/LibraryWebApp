@@ -82,11 +82,12 @@ public class ReviewRepository extends AbstractRepository<Review> {
     @Override
     public void flush() {
         InsertionExecutor insertionExecutor = model.getInsertionExecutor();
-        Object[] objects = new Object[3];
+        Object[] objects;
         String sql;
         for (Review persistedEntity : persistedEntities) {
             if(!identityMap.contains(persistedEntity)) {
                 sql = "INSERT INTO review(value,timestamp,user_id,item_id) VALUES(?,?,?,?)";
+                objects = new Object[4];
                 objects[0] = persistedEntity.getValue();
                 objects[1] = persistedEntity.getTimestamp();
                 objects[2] = persistedEntity.getUserId();
@@ -94,7 +95,8 @@ public class ReviewRepository extends AbstractRepository<Review> {
                 int id = insertionExecutor.insert(sql,objects);
                 persistedEntity.setId(id);
             } else {
-                sql = "UPDATE frame SET value=?,timestamp=?,user_id=?,item_id=? WHERE id=?";
+                sql = "UPDATE review SET value=?,timestamp=?,user_id=?,item_id=? WHERE id=?";
+                objects = new Object[5];
                 objects[0] = persistedEntity.getValue();
                 objects[1] = persistedEntity.getTimestamp();
                 objects[2] = persistedEntity.getUserId();

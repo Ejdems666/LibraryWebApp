@@ -89,19 +89,18 @@ public class UserRepository extends AbstractRepository<User> {
         String sql;
         for (User persistedEntity : persistedEntities) {
             if (!identityMap.contains(persistedEntity)) {
-                sql = "INSERT INTO 'user' ('name', 'surname', 'email', 'password', 'salt')" +
-                        "VALUES (?,?,?,?,?)";
+                sql = "INSERT INTO 'user' ('name', 'surname', 'email', 'password', 'salt') VALUES (?,?,?,?,?)";
                 objects = new Object[5];
-                objects[1] = persistedEntity.getName();
-                objects[2] = persistedEntity.getSurname();
-                objects[3] = persistedEntity.getEmail();
-                objects[4] = persistedEntity.getPassword();
-                objects[5] = persistedEntity.getSalt();
+                objects[0] = persistedEntity.getName();
+                objects[1] = persistedEntity.getSurname();
+                objects[2] = persistedEntity.getEmail();
+                objects[3] = persistedEntity.getPassword();
+                objects[4] = persistedEntity.getSalt();
                 int id = insertionExecutor.insert(sql, objects);
                 persistedEntity.setId(id);
 
             } else {
-                sql = "UPDATE order SET name=?, surname=?, email=?, password=? salt=? WHERE id=?";
+                sql = "UPDATE user SET name=?, surname=?, email=?, password=? salt=? WHERE id=?";
                 objects = new Object[6];
                 objects[0] = persistedEntity.getName();
                 objects[1] = persistedEntity.getSurname();

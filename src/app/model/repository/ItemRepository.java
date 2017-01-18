@@ -1,5 +1,7 @@
 package app.model.repository;
 
+import app.model.entity.ItemAttribute;
+import hyggedb.insert.InsertionExecutor;
 import hyggedb.select.Condition;
 import hyggedb.select.Selection;
 import app.model.Model;
@@ -87,20 +89,30 @@ public class ItemRepository extends AbstractRepository<Item> {
 
     @Override
     public void persistAndFlush(Item entity) {
-        Item[] items;
-        String sql;
-        int id;
-        for (Item persistedEntity : persistedEntities) {
-            if (!identityMap.contains(persistedEntity)) {
-
-            }
-        }
+        persist(entity);
+        flush();
     }
 
     @Override
     public void flush() {
-
+        InsertionExecutor insertionExecutor = model.getInsertionExecutor();
+        Object[] objects;
+        String sql;
+        for (Item persistedEntity : persistedEntities) {
+            if(!identityMap.contains(persistedEntity)) {
+                sql = "INSERT INTO item(name) VALUES(?)";
+                objects = new Object[1];
+                objects[0] = persistedEntity.getName();
+                int id = insertionExecutor.insert(sql,objects);
+                persistedEntity.setId(id);
+            } else {
+                sql = "UPDATE item SET name=? WHERE id=?";
+                objects = new Object[2];
+                objects[0] = persistedEntity.getName();
+                objects[1] = persistedEntity.getId();
+                insertionExecutor.update(sql,objects);
+            }
+        }
     }
-
 }
 
