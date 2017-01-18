@@ -31,6 +31,8 @@ public class ItemRepository implements Repository<Item> {
             if(rs.next()) {
                 item.setName(rs.getString("name"));
                 item.setId(rs.getInt("id"));
+                item.setUserId(rs.getInt("user_id"));
+                item.setCategoryId(rs.getInt("category_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,11 +50,9 @@ public class ItemRepository implements Repository<Item> {
                 if(rs.next()) {
                     String name = rs.getString("name");
                     int id = rs.getInt("id");
-                    Item item = new Item(name, id);
-                    identityMap.add(item);
-                    items.add(item);
-
-
+                    int userId = rs.getInt("user_id");
+                    int categoryId = rs.getInt("category_id");
+                    items.add(new Item(name, id, userId, categoryId));
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
