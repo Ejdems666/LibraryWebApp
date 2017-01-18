@@ -6,14 +6,14 @@ package model.entity;
 public class ItemAttribute implements Entity {
 
     private int id;
-    private int item_id;
-    private int attribute_id;
+    private int itemId;
+    private int attributeId;
     private String data;
 
-    public ItemAttribute(int id, int item_id, int attribute_id, String data) {
+    public ItemAttribute(int id, int itemId, int attributeId, String data) {
         this.id = id;
-        this.item_id = item_id;
-        this.attribute_id = attribute_id;
+        this.itemId = itemId;
+        this.attributeId = attributeId;
         this.data = data;
     }
 
@@ -28,19 +28,19 @@ public class ItemAttribute implements Entity {
     }
 
     public int getItemId() {
-        return item_id;
+        return itemId;
     }
 
     public void setItemId(int item_id) {
-        this.item_id = item_id;
+        this.itemId = item_id;
     }
 
     public int getAttributeId() {
-        return attribute_id;
+        return attributeId;
     }
 
-    public void setAttributeId(int attribute_id) {
-        this.attribute_id = attribute_id;
+    public void setAttributeId(int attributeId) {
+        this.attributeId = attributeId;
     }
 
     public String getData() {
