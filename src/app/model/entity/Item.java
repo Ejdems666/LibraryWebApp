@@ -7,6 +7,8 @@ public class Item implements Entity {
 
     private String name;
     private int id;
+    private String img;
+    private String description;
     private int userId;
     private int categoryId;
 
@@ -39,5 +41,21 @@ public class Item implements Entity {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

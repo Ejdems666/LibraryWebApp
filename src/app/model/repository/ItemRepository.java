@@ -1,11 +1,10 @@
 package app.model.repository;
 
-import app.model.entity.ItemAttribute;
+import app.model.Model;
+import app.model.entity.Item;
 import hyggedb.insert.InsertionExecutor;
 import hyggedb.select.Condition;
 import hyggedb.select.Selection;
-import app.model.Model;
-import app.model.entity.Item;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +38,8 @@ public class ItemRepository extends AbstractRepository<Item> {
         Item item = null;
         if (rs.next()) {
             item.setName(rs.getString("name"));
+            item.setImg(rs.getString("img"));
+            item.setDescription(rs.getString("description"));
             item.setId(rs.getInt("id"));
             item.setUserId(rs.getInt("user_id"));
             item.setCategoryId(rs.getInt("category_id"));
@@ -100,16 +101,20 @@ public class ItemRepository extends AbstractRepository<Item> {
         String sql;
         for (Item persistedEntity : persistedEntities) {
             if(!identityMap.contains(persistedEntity)) {
-                sql = "INSERT INTO item(name) VALUES(?)";
+                sql = "INSERT INTO item(name,img,description) VALUES(?)";
                 objects = new Object[1];
                 objects[0] = persistedEntity.getName();
+                objects[1] = persistedEntity.getImg();
+                objects[2] = persistedEntity.getDescription();
                 int id = insertionExecutor.insert(sql,objects);
                 persistedEntity.setId(id);
             } else {
-                sql = "UPDATE item SET name=? WHERE id=?";
+                sql = "UPDATE item SET name=?,img=?,description=? WHERE id=?";
                 objects = new Object[2];
                 objects[0] = persistedEntity.getName();
-                objects[1] = persistedEntity.getId();
+                objects[1] = persistedEntity.getImg();
+                objects[2] = persistedEntity.getDescription();
+                objects[3] = persistedEntity.getId();
                 insertionExecutor.update(sql,objects);
             }
         }
