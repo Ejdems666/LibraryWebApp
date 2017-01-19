@@ -1,15 +1,15 @@
-package model;
+package hyggedb.insert;
 
 import java.sql.*;
 
 /**
- * Created by adam on 18/01/2017.
+ * Created by Ejdems on 27/11/2016.
  */
-public class QueryExecutor {
+public class InsertionExecutor {
     private Connection connection;
     private PreparedStatement query;
 
-    public QueryExecutor(Connection connection) {
+    public InsertionExecutor(Connection connection) {
         this.connection = connection;
     }
 

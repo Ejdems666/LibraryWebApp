@@ -1,4 +1,4 @@
-package model.entity;
+package app.model.entity;
 
 import java.sql.Date;
 

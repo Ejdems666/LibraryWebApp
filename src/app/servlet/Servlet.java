@@ -1,4 +1,6 @@
-package library;
+package app.servlet;
+
+import app.model.Model;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

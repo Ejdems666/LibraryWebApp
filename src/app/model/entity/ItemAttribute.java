@@ -1,4 +1,4 @@
-package model.entity;
+package app.model.entity;
 
 /**
  * Created by ivoni on 1/12/2017.
@@ -9,13 +9,6 @@ public class ItemAttribute implements Entity {
     private int itemId;
     private int attributeId;
     private String data;
-
-    public ItemAttribute(int id, int itemId, int attributeId, String data) {
-        this.id = id;
-        this.itemId = itemId;
-        this.attributeId = attributeId;
-        this.data = data;
-    }
 
     @Override
     public int getId() {

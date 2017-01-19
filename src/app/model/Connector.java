@@ -1,4 +1,4 @@
-package model;
+package app.model;
 
 import java.sql.*;
 
@@ -8,7 +8,6 @@ import java.sql.*;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 
 public class Connector {
 
@@ -18,7 +17,7 @@ public class Connector {
     private static final int PORT = 3306;
     private static final String DATABASE = "cba_library";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "root";
 
 
      public Connector() throws Exception {

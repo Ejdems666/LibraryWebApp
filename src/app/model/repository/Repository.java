@@ -1,6 +1,8 @@
-package model.repository;
+package app.model.repository;
 
-import model.entity.Entity;
+import hyggedb.select.Condition;
+import app.model.entity.Entity;
+import hyggedb.select.Selection;
 
 import java.util.Collection;
 
@@ -12,10 +14,13 @@ public interface Repository<K extends Entity> {
 
     public Collection<K> findAll();
 
+    public Collection<K> findBy(Condition condition);
+
     public void persist(K entity);
 
     public void persistAndFlush(K entity);
 
     public void flush();
+
 
 }

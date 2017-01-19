@@ -1,8 +1,7 @@
-package library;
+package app.servlet;
 
-import model.Connector;
-import model.repository.ItemRepository;
-import model.repository.UserRepository;
+import app.model.Model;
+import app.model.repository.AttributeRepository;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,14 +17,12 @@ public class Homepage extends Servlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("title","title");
-        this.renderTemplate(request,response);
-        try {
-            Connector connector = new Connector();
-            UserRepository userRepository = new UserRepository(connector);
-            System.out.println(userRepository.findAll());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Model model = Model.getInstance();
+        AttributeRepository attributeRepository = model.getAttributeRepository();
+
+        System.out.println(
+                attributeRepository.findByCategory(1)
+        );
+        this.renderTemplate(request, response);
     }
 }

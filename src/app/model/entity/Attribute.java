@@ -1,17 +1,12 @@
-package model.entity;
+package app.model.entity;
 
 /**
  * Created by ivoni on 1/12/2017.
  */
 public class Attribute implements Entity{
 
-    String name;
-    int id;
-
-    public Attribute(String name, int id) {
-        this.name = name;
-        this.id = id;
-    }
+    private String name;
+    private int id;
 
     public String getName() {
         return name;

@@ -1,4 +1,4 @@
-package model.entity;
+package app.model.entity;
 
 /**
  * Created by ivoni on 1/12/2017.
@@ -9,13 +9,6 @@ public class Item implements Entity {
     private int id;
     private int userId;
     private int categoryId;
-
-    public Item(String name, int id, int userId, int categoryId) {
-        this.name = name;
-        this.id = id;
-        this.userId = userId;
-        this.categoryId = categoryId;
-    }
 
     public String getName() {
         return name;

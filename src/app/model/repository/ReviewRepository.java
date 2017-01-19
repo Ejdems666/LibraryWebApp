@@ -1,10 +1,11 @@
-package model.repository;
+package app.model.repository;
 
-import model.QueryExecutor;
-import model.QuerySelector;
-import model.entity.Review;
+import hyggedb.insert.InsertionExecutor;
+import hyggedb.select.Condition;
+import hyggedb.select.Selection;
+import app.model.Model;
+import app.model.entity.Review;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,22 +14,19 @@ import java.util.Collection;
 /**
  * Created by adam on 18/01/2017.
  */
-public class ReviewRepository implements Repository<Review> {
-    private QuerySelector querySelector;
-    private ArrayList<Review> identityMap = new ArrayList<>();
-    private ArrayList<Review> persistedEntities = new ArrayList<>();
-    private QueryExecutor queryExecutor;
+public class ReviewRepository extends AbstractRepository<Review> {
 
-    public ReviewRepository(Connection connection) {
-        this.querySelector = new QuerySelector(connection);
-        this.queryExecutor = new QueryExecutor(connection);
+    public ReviewRepository(Model model) {
+        super(model);
     }
 
     @Override
     public Review getById(int id) {
         Review review = null;
         try {
-            ResultSet rs = querySelector.getResultSet("SELECT * FROM review WHERE id=" + id);
+            Selection selection = new Selection("review");
+            selection.where("id=?",id);
+            ResultSet rs = model.getSelectionExecutor().getResult(selection);
             review = mapReview(rs);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,7 +51,7 @@ public class ReviewRepository implements Repository<Review> {
     public Collection<Review> findAll() {
         ArrayList<Review> reviews = null;
         try {
-            ResultSet rs = querySelector.getResultSet("SELECT * FROM review");
+            ResultSet rs = model.getSelectionExecutor().getResult(new Selection("review"));
             Review review = mapReview(rs);
             while (review != null) {
                 reviews.add(review);
@@ -63,6 +61,11 @@ public class ReviewRepository implements Repository<Review> {
             e.printStackTrace();
         }
         return reviews;
+    }
+
+    @Override
+    public Collection<Review> findBy(Condition condition) {
+        return null;
     }
 
     @Override
@@ -78,25 +81,28 @@ public class ReviewRepository implements Repository<Review> {
 
     @Override
     public void flush() {
-        Object[] objects = new Object[3];
+        InsertionExecutor insertionExecutor = model.getInsertionExecutor();
+        Object[] objects;
         String sql;
         for (Review persistedEntity : persistedEntities) {
             if(!identityMap.contains(persistedEntity)) {
                 sql = "INSERT INTO review(value,timestamp,user_id,item_id) VALUES(?,?,?,?)";
+                objects = new Object[4];
                 objects[0] = persistedEntity.getValue();
                 objects[1] = persistedEntity.getTimestamp();
                 objects[2] = persistedEntity.getUserId();
                 objects[3] = persistedEntity.getItemId();
-                int id = queryExecutor.insert(sql,objects);
+                int id = insertionExecutor.insert(sql,objects);
                 persistedEntity.setId(id);
             } else {
-                sql = "UPDATE frame SET value=?,timestamp=?,user_id=?,item_id=? WHERE id=?";
+                sql = "UPDATE review SET value=?,timestamp=?,user_id=?,item_id=? WHERE id=?";
+                objects = new Object[5];
                 objects[0] = persistedEntity.getValue();
                 objects[1] = persistedEntity.getTimestamp();
                 objects[2] = persistedEntity.getUserId();
                 objects[3] = persistedEntity.getItemId();
                 objects[4] = persistedEntity.getId();
-                queryExecutor.update(sql,objects);
+                insertionExecutor.update(sql,objects);
             }
         }
     }

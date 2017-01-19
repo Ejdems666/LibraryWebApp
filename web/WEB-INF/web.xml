@@ -5,7 +5,7 @@
          version="3.1">
     <servlet>
         <servlet-name>Homepage</servlet-name>
-        <servlet-class>library.Homepage</servlet-class>
+        <servlet-class>app.servlet.Homepage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Homepage</servlet-name>
