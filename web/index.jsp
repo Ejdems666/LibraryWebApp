@@ -26,7 +26,7 @@
                 </button>
             </div>
             <div>
-                <img src="Library.gif" alt="Just a minute" style="width:250px;height:60px;" >
+                <img src="assets/img/Library.jpeg" alt="Just a minute" style="width:250px;height:60px;" >
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/"><span class="glyphicon glyphicon-home"></span> Homepage </a></li>
                     <li><a href="/add"><span class="glyphicon glyphicon-plus"></span> ADD </a></li>

@@ -14,6 +14,7 @@ import java.util.Collection;
 /**
  * Created by adam on 13/01/2017.
  */
+
 public class ItemRepository extends AbstractRepository<Item> {
     public ItemRepository(Model model) {
         super(model);
