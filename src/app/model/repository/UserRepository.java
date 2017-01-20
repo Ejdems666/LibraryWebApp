@@ -1,10 +1,11 @@
 package app.model.repository;
 
+import app.model.Hasher;
+import app.model.Model;
+import app.model.entity.User;
 import hyggedb.insert.InsertionExecutor;
 import hyggedb.select.Condition;
 import hyggedb.select.Selection;
-import app.model.Model;
-import app.model.entity.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,13 +20,12 @@ public class UserRepository extends AbstractRepository<User> {
         super(model);
     }
 
-
     @Override
     public User getById(int id) {
         User user = null;
         try {
             Selection selection = new Selection("user");
-            selection.where("id=?",id);
+            selection.where("id=?", id);
             ResultSet rs = model.getSelectionExecutor().getResult(selection);
             user = mapUser(rs);
         } catch (SQLException e) {
@@ -87,6 +87,8 @@ public class UserRepository extends AbstractRepository<User> {
         InsertionExecutor insertionExecutor = model.getInsertionExecutor();
         Object[] objects;
         String sql;
+        String hashedPassword;
+        Hasher hasher = new Hasher();
         for (User persistedEntity : persistedEntities) {
             if (!identityMap.contains(persistedEntity)) {
                 sql = "INSERT INTO 'user' ('name', 'surname', 'email', 'password', 'salt') VALUES (?,?,?,?,?)";
@@ -94,21 +96,23 @@ public class UserRepository extends AbstractRepository<User> {
                 objects[0] = persistedEntity.getName();
                 objects[1] = persistedEntity.getSurname();
                 objects[2] = persistedEntity.getEmail();
-                objects[3] = persistedEntity.getPassword();
+                persistedEntity.setSalt(hasher.generateSalt());
+                hashedPassword = hasher.hashPassword(persistedEntity.getPassword(), persistedEntity.getSalt());
+                objects[3] = hashedPassword;
                 objects[4] = persistedEntity.getSalt();
                 int id = insertionExecutor.insert(sql, objects);
                 persistedEntity.setId(id);
 
             } else {
-                sql = "UPDATE user SET name=?, surname=?, email=?, password=? salt=? WHERE id=?";
-                objects = new Object[6];
+                sql = "UPDATE user SET name=?, surname=?, email=?, password=? WHERE id=?";
+                objects = new Object[5];
                 objects[0] = persistedEntity.getName();
                 objects[1] = persistedEntity.getSurname();
                 objects[2] = persistedEntity.getEmail();
-                objects[3] = persistedEntity.getPassword();
-                objects[4] = persistedEntity.getSalt();
-                objects[5] = persistedEntity.getId();
-                insertionExecutor.update(sql,objects);
+                hashedPassword = hasher.hashPassword(persistedEntity.getPassword(), persistedEntity.getSalt());
+                objects[3] = hashedPassword;
+                objects[4] = persistedEntity.getId();
+                insertionExecutor.update(sql, objects);
             }
         }
     }

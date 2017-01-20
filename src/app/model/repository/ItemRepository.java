@@ -37,6 +37,7 @@ public class ItemRepository extends AbstractRepository<Item> {
     private Item mapItem(ResultSet rs) throws SQLException {
         Item item = null;
         if (rs.next()) {
+            item = new Item();
             item.setName(rs.getString("name"));
             item.setImg(rs.getString("img"));
             item.setDescription(rs.getString("description"));
@@ -101,16 +102,18 @@ public class ItemRepository extends AbstractRepository<Item> {
         String sql;
         for (Item persistedEntity : persistedEntities) {
             if(!identityMap.contains(persistedEntity)) {
-                sql = "INSERT INTO item(name,img,description) VALUES(?)";
-                objects = new Object[1];
+                sql = "INSERT INTO item(name,img,description,category_id,user_id) VALUES(?,?,?,?,?)";
+                objects = new Object[5];
                 objects[0] = persistedEntity.getName();
                 objects[1] = persistedEntity.getImg();
                 objects[2] = persistedEntity.getDescription();
+                objects[3] = persistedEntity.getCategoryId();
+                objects[4] = 1;
                 int id = insertionExecutor.insert(sql,objects);
                 persistedEntity.setId(id);
             } else {
                 sql = "UPDATE item SET name=?,img=?,description=? WHERE id=?";
-                objects = new Object[2];
+                objects = new Object[4];
                 objects[0] = persistedEntity.getName();
                 objects[1] = persistedEntity.getImg();
                 objects[2] = persistedEntity.getDescription();

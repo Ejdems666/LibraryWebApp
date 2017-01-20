@@ -36,6 +36,7 @@ public class CategoryRepository extends AbstractRepository<Category> {
     private Category mapCategory(ResultSet rs) throws SQLException {
         Category category = null;
         if (rs.next()) {
+            category = new Category();
             category.setId(rs.getInt("id"));
             category.setName(rs.getString("name"));
             identityMap.add(category);

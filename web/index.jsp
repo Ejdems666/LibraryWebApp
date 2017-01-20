@@ -1,3 +1,5 @@
+<%@ page import="app.model.entity.Category" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,9 +8,9 @@
     <title>${title}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap.min.css">
+    <script src="assets/jquery-3.0.0.min.js"></script>
+    <script src="assets/bootstrap.min.js"></script>
 </head>
 <body>
     <% if (request.getAttribute("alert") != null) {%>
@@ -26,17 +28,35 @@
             <div>
                 <img src="Library.gif" alt="Just a minute" style="width:250px;height:60px;" >
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="login.html"><span class="glyphicon glyphicon-user"></span> Log In</a></li>
-                    <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                    <li><a href="add.html"><span class="glyphicon glyphicon-shopping-cart"></span> ADD </a></li>
-                    <form action="search.html">
-                        Search: <input type="search" id="mySearch" name="search">
+                    <li><a href="/"><span class="glyphicon glyphicon-home"></span> Homepage </a></li>
+                    <li><a href="/add"><span class="glyphicon glyphicon-plus"></span> ADD </a></li>
+                    <form method="GET" action="/" id="search-form">
+                        <div class="search-control">
+                            <label for="search">Search:</label>
+                            <input type="search" id="search" name="search">
+                        </div>
+                        <div class="search-control">
+                            <label for="order">Order By name</label>
+                            <input value="order" id="order" name="order" type="checkbox">
+                        </div>
+                        <div class="search-control">
+                            <label for="category">Category</label>
+                            <select id="category" name="category">
+                                <option value="all">all</option>
+                                <% for (Category category : ((Collection<Category>) request.getAttribute("categories"))) { %>
+                                <option value="<%=category.getId()%>"><%=category.getName()%></option>
+                                <% } %>
+                            </select>
+                        </div>
+                        <button  class="search-control" name="go" value="true">Go</button>
                     </form>
                 </ul>
             </div>
         </div>
     </nav>
-    <jsp:include page="templates/${template}.jsp"/>
+    <div class="container">
+        <jsp:include page="templates/${template}.jsp"/>
+    </div>
     <footer class="container-fluid text-center">
         <p>Online Library Copyright</p>
     </footer>
