@@ -5,8 +5,8 @@ package app.model.entity;
  */
 public class Item implements Entity {
 
-    private String name;
     private int id;
+    private String name;
     private String img;
     private String description;
     private int userId;
@@ -16,15 +16,17 @@ public class Item implements Entity {
         return name;
     }
 
-    public void setName(String name) {this.name = name;}
-
-    public void setId(int id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getUserId() {

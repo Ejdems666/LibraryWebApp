@@ -1,8 +1,7 @@
 package app.model.repository;
 
-import hyggedb.select.Condition;
 import app.model.entity.Entity;
-import hyggedb.select.Selection;
+import hyggedb.select.Condition;
 
 import java.util.Collection;
 
@@ -24,3 +23,4 @@ public interface Repository<K extends Entity> {
 
 
 }
+

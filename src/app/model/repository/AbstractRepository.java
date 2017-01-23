@@ -17,3 +17,4 @@ public abstract class AbstractRepository<K extends Entity> implements Repository
         this.model = model;
     }
 }
+

@@ -31,7 +31,6 @@ public class ItemRepository extends AbstractRepository<Item> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        identityMap.add(item);
         return item;
     }
 
@@ -45,6 +44,7 @@ public class ItemRepository extends AbstractRepository<Item> {
             item.setId(rs.getInt("id"));
             item.setUserId(rs.getInt("user_id"));
             item.setCategoryId(rs.getInt("category_id"));
+            identityMap.add(item);
         }
         return item;
     }

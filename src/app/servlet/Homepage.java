@@ -3,7 +3,6 @@ package app.servlet;
 import app.ItemNameComparator;
 import app.model.Model;
 import app.model.entity.Item;
-import app.model.repository.CategoryRepository;
 import app.model.repository.ItemRepository;
 import hyggedb.select.Condition;
 
@@ -22,15 +21,12 @@ public class Homepage extends Servlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Model model = Model.getInstance();
-        processSearchAndFilterForm(request, model);
-
-        CategoryRepository categoryRepository = model.getCategoryRepository();
-        request.setAttribute("categories", categoryRepository.findAll());
+        processSearchAndFilterForm(request);
         this.renderTemplate(request, response);
     }
 
-    private void processSearchAndFilterForm(HttpServletRequest request, Model model) {
+    private void processSearchAndFilterForm(HttpServletRequest request) {
+        Model model = Model.getInstance();
         ItemRepository itemRepository = model.getItemRepository();
         if (request.getParameter("go") != null) {
             String search = request.getParameter("search");

@@ -1,6 +1,7 @@
 package app.servlet;
 
 import app.model.Model;
+import app.model.repository.CategoryRepository;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,7 +27,14 @@ public abstract class Servlet extends HttpServlet {
         if(request.getAttribute("title") == null) {
             request.setAttribute("title",template);
         }
+        setCategoriesForSearch(request);
         RequestDispatcher view = request.getRequestDispatcher("index.jsp");
         view.forward(request, response);
+    }
+
+    private void setCategoriesForSearch(HttpServletRequest request) {
+        Model model = Model.getInstance();
+        CategoryRepository categoryRepository = model.getCategoryRepository();
+        request.setAttribute("categories", categoryRepository.findAll());
     }
 }

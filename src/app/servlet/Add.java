@@ -2,7 +2,6 @@ package app.servlet;
 
 import app.model.Model;
 import app.model.entity.Item;
-import app.model.repository.CategoryRepository;
 import app.model.repository.ItemRepository;
 
 import javax.servlet.ServletException;
@@ -16,11 +15,9 @@ import java.io.IOException;
  */
 @WebServlet(name = "Add")
 public class Add extends Servlet {
-    private Model model;
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        init(request);
         if (request.getParameter("add") != null) {
+            Model model = Model.getInstance();
             ItemRepository itemRepository = model.getItemRepository();
             Item item = new Item();
             item.setName(request.getParameter("name"));
@@ -34,13 +31,6 @@ public class Add extends Servlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        init(request);
         renderTemplate(request,response);
-    }
-
-    private void init(HttpServletRequest request) {
-        model = Model.getInstance();
-        CategoryRepository categoryRepository = model.getCategoryRepository();
-        request.setAttribute("categories", categoryRepository.findAll());
     }
 }
